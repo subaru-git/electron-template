@@ -1,0 +1,59 @@
+{
+  "name": "electron-template",
+  "version": "1.0.0",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.13.1"
+  },
+  "main": "dist/main.js",
+  "scripts": {
+    "predev": "rimraf dist",
+    "prebuild": "rimraf dist release",
+    "debug:build": "tsc -p tsconfig.main.json",
+    "dev:tsc": "tsc -w -p tsconfig.main.json",
+    "dev:webpack": "cross-env NODE_ENV=\"development\" webpack --progress",
+    "dev:electron": "wait-on ./dist/index.html && cross-env NODE_ENV=\"development\" electron .",
+    "build": "cross-env NODE_ENV=\"production\" webpack --progress",
+    "serve": "electron .",
+    "lint": "eslint --ext .ts,.tsx src",
+    "lint:fix": "eslint --fix --ext .ts,.tsx src",
+    "start": "run-p dev:*",
+    "start:prod": "run-s build serve",
+    "build:release": "ts-node ./electron-builder.ts"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/mini-css-extract-plugin": "^2.4.0",
+    "@types/node": "^17.0.2",
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^17.0.11",
+    "copy-webpack-plugin": "^10.2.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.5.1",
+    "electron": "^16.0.5",
+    "electron-builder": "^22.14.5",
+    "electron-reload": "^2.0.0-alpha.1",
+    "electron-search-devtools": "^1.5.1",
+    "html-webpack-plugin": "^5.5.0",
+    "ifdef-loader": "^2.3.2",
+    "mini-css-extract-plugin": "^2.4.5",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4",
+    "wait-on": "^6.0.0",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1",
+    "@typescript-eslint/eslint-plugin": "^5.8.0",
+    "@typescript-eslint/parser": "^5.8.0",
+    "eslint": "^8.5.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-react": "^7.27.1",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "prettier": "^2.5.1"
+  }
+}
