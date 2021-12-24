@@ -7,7 +7,7 @@
   },
   "main": "dist/main.js",
   "build": {
-    "appId": "com.example.${name}",
+    "appId": "com.example.app",
     "productName": "Electron Template",
     "copyright": "Copyright © 2022 whoami",
     "artifactName": "${name}-${version}-${platform}-${arch}.${ext}",
@@ -44,7 +44,10 @@
     "lint:fix": "eslint --fix --ext .ts,.tsx src",
     "start": "run-p dev:*",
     "start:prod": "run-s build serve",
-    "build:release": "run-s build && electron-builder --mac --arm64"
+    "build:release:windows": "run-s build && electron-builder --windows --x64",
+    "build:release:linux": "run-s build && electron-builder --linux --x64",
+    "build:release:mac": "run-s build && electron-builder --mac --x64",
+    "build:release:mac:m1": "run-s build && electron-builder --mac --arm64"
   },
   "dependencies": {
     "react": "^17.0.2",
