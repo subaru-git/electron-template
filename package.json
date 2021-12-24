@@ -6,6 +6,31 @@
     "node": ">=12.13.1"
   },
   "main": "dist/main.js",
+  "build": {
+    "appId": "com.example.${name}",
+    "productName": "Electron Template",
+    "copyright": "Copyright © 2022 whoami",
+    "artifactName": "${name}-${version}-${platform}-${arch}.${ext}",
+    "directories": {
+      "output": "release",
+      "buildResources": "assets"
+    },
+    "mac": {
+      "identity": null,
+      "icon": "assets/icon.icns"
+    },
+    "linux": {
+      "icon": "assets/icon.png"
+    },
+    "win": {
+      "icon": "assets/win/icon_win.ico",
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
   "scripts": {
     "predev": "rimraf dist",
     "prebuild": "rimraf dist release",
@@ -19,7 +44,7 @@
     "lint:fix": "eslint --fix --ext .ts,.tsx src",
     "start": "run-p dev:*",
     "start:prod": "run-s build serve",
-    "build:release": "ts-node ./electron-builder.ts"
+    "build:release": "run-s build && electron-builder --mac --arm64"
   },
   "dependencies": {
     "react": "^17.0.2",
