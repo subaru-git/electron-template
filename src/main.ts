@@ -28,6 +28,10 @@ if (isDev) {
 }
 /// #endif
 
+/**
+ * window creation with memoization window state.
+ * @notExported
+ */
 const createWindow = () => {
   const windowState = windowStateKeeper({
     defaultWidth: 600,
@@ -54,6 +58,10 @@ const createWindow = () => {
   return mainWindow;
 };
 
+/**
+ * when electron is ready, create the window and initialize the services.
+ * @notExported
+ */
 app.whenReady().then(async () => {
   if (isDev) {
     const devtool = await searchDevtools('REACT', { browser: 'google-chrome' });
