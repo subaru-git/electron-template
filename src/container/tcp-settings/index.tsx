@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
-import { useStateValue, useStateSetValue } from '../../context';
+import { useStateValue, useStateSetValue } from '~/context';
 const { api } = window;
 
 const TcpSettings: FC = () => {

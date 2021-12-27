@@ -14,6 +14,9 @@ const common: Configuration = {
   },
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.json'],
+    alias: {
+      '~': path.resolve(__dirname, 'src/'),
+    },
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
