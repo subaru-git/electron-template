@@ -1,15 +1,17 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
+import { useStateValue, useStateSetValue } from '../../context';
 const { api } = window;
 
 const TcpSettings: FC = () => {
+  const state = useStateValue();
+  const setState = useStateSetValue();
   const [host, setHost] = useState('');
   const [port, setPort] = useState('');
-  const [status, setStatus] = useState('disconnected');
   useEffect(() => {
     const removeListener = api.tcpConnectStateChange((message: string) => {
       console.log(`log from TcpSettings ${message}`);
-      setStatus(message);
+      setState(message);
     });
     return () => {
       removeListener();
@@ -26,9 +28,7 @@ const TcpSettings: FC = () => {
               </Form.Text>
             </Col>
             <Col sm={{ span: 8, offset: 4 }}>
-              <Form.Text className="text-muted">
-                {`Status: ${status}`}
-              </Form.Text>
+              <Form.Text className="text-muted">{`Status: ${state}`}</Form.Text>
             </Col>{' '}
           </Row>
           <Row>
