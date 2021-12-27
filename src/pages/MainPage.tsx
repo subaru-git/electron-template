@@ -5,9 +5,11 @@ const { api } = window;
 const MainPage: FC = () => {
   const [host, setHost] = useState('');
   const [port, setPort] = useState('');
+  const [status, setStatus] = useState('disconnected');
   useEffect(() => {
     const removeListener = api.tcpConnectStateChange((message: string) => {
       console.log(`log from MainPage ${message}`);
+      setStatus(message);
     });
     return () => {
       removeListener();
@@ -23,6 +25,11 @@ const MainPage: FC = () => {
                 Enter your listening host and port.
               </Form.Text>
             </Col>
+            <Col sm={{ span: 8, offset: 4 }}>
+              <Form.Text className="text-muted">
+                {`Status: ${status}`}
+              </Form.Text>
+            </Col>{' '}
           </Row>
           <Row>
             <Col sm={{ span: 4, offset: 4 }}>
@@ -49,7 +56,7 @@ const MainPage: FC = () => {
               <Button
                 onClick={() => {
                   console.log(host, port);
-                  (async () => await api.tcpConnect('want to connect!'))();
+                  (async () => await api.tcpConnect(host, parseInt(port)))();
                 }}
               >
                 Connect

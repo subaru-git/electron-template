@@ -1,10 +1,9 @@
 import path from 'path';
-import { BrowserWindow, app, session, ipcMain } from 'electron';
+import { BrowserWindow, app, session } from 'electron';
 import { searchDevtools } from 'electron-search-devtools';
-import { connect } from './services/tcp-client';
+import { initialize } from './services/main-initialize';
 
 const isDev = process.env.NODE_ENV === 'development';
-let mainWindow: BrowserWindow | null = null;
 
 const getResourceDirectory = () => {
   return isDev
@@ -29,7 +28,7 @@ if (isDev) {
 /// #endif
 
 const createWindow = () => {
-  mainWindow = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     width: 600,
     height: 400,
     webPreferences: {
@@ -37,12 +36,14 @@ const createWindow = () => {
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
     },
-    title: 'Electron React TS',
+    title: 'Electron Template',
     icon: path.join(getResourceDirectory(), 'assets/icon.png'),
   });
 
   if (isDev) mainWindow.webContents.openDevTools({ mode: 'detach' });
   mainWindow.loadFile('dist/index.html');
+
+  return mainWindow;
 };
 
 app.whenReady().then(async () => {
@@ -55,14 +56,8 @@ app.whenReady().then(async () => {
     }
   }
 
-  createWindow();
+  const window = createWindow();
+  initialize(window);
 });
 
 app.once('window-all-closed', () => app.quit());
-
-ipcMain.on('tcpConnect', async (event, message) => {
-  console.log(`log main on tcpConnect ${message}`);
-  connect('localhost', 8888);
-  event.reply('tcpConnectStateChange', 'hello');
-  // mainWindow?.webContents.send('tcpConnectStateChange', 'send from main');
-});

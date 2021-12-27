@@ -1,9 +1,9 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
 contextBridge.exposeInMainWorld('api', {
-  tcpConnect: async (message: string): Promise<void> => {
-    console.log(`log from tcpConnect ${message}`);
-    await ipcRenderer.send('tcpConnect', message);
+  tcpConnect: async (host: string, port: number): Promise<void> => {
+    console.log(`log from tcpConnect host ${host}, port ${port}`);
+    await ipcRenderer.send('tcpConnect', host, port);
   },
   tcpConnectStateChange: (listener: (message: string) => void) => {
     console.log(`prepare to listen tcpConnect`);

@@ -4,6 +4,6 @@ declare global {
   }
 }
 export interface IApi {
-  tcpConnect: (message: string) => Promise<void>;
+  tcpConnect: (host: string, port: number) => Promise<void>;
   tcpConnectStateChange: (listener: (message: string) => void) => () => void;
 }
