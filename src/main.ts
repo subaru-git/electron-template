@@ -2,6 +2,7 @@ import path from 'path';
 import { BrowserWindow, app, session } from 'electron';
 import { searchDevtools } from 'electron-search-devtools';
 import { initialize } from './services/main-initialize';
+import windowStateKeeper from 'electron-window-state';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -28,9 +29,15 @@ if (isDev) {
 /// #endif
 
 const createWindow = () => {
+  const windowState = windowStateKeeper({
+    defaultWidth: 600,
+    defaultHeight: 400,
+  });
   const mainWindow = new BrowserWindow({
-    width: 600,
-    height: 400,
+    x: windowState.x,
+    y: windowState.y,
+    width: windowState.width,
+    height: windowState.height,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -39,6 +46,7 @@ const createWindow = () => {
     title: 'Electron Template',
     icon: path.join(getResourceDirectory(), 'assets/icon.png'),
   });
+  windowState.manage(mainWindow);
 
   if (isDev) mainWindow.webContents.openDevTools({ mode: 'detach' });
   mainWindow.loadFile('dist/index.html');
