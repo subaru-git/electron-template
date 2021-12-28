@@ -12,6 +12,10 @@ const setTcpStateContext = createContext<Dispatch<SetStateAction<string>>>(
   () => undefined
 );
 
+export type TcpStateProviderProps = {
+  initial: string;
+};
+
 /**
  * Context provider for the TCP state.
  *
@@ -29,8 +33,11 @@ const setTcpStateContext = createContext<Dispatch<SetStateAction<string>>>(
  *
  * @param children children of the context provider
  */
-const TcpStateProvider: FC = ({ children }) => {
-  const [state, setState] = useState<string>('closed');
+const TcpStateProvider: FC<TcpStateProviderProps> = ({
+  initial = '',
+  children,
+}) => {
+  const [state, setState] = useState<string>(initial);
 
   return (
     <tcpStateContext.Provider value={state}>

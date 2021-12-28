@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
  */
 ReactDOM.render(
   <React.StrictMode>
-    <TcpStateProvider>
+    <TcpStateProvider initial="closed">
       <MainPage />
     </TcpStateProvider>
   </React.StrictMode>,
