@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
+import { FaCircle } from 'react-icons/fa';
 import { useStateValue, useStateSetValue } from '~/context';
 const { api } = window;
 
@@ -10,7 +11,7 @@ const { api } = window;
  * @returns TcpSettings component
  */
 const TcpSettings: FC = () => {
-  const state = useStateValue();
+  const status = useStateValue();
   const setState = useStateSetValue();
   const [host, setHost] = useState('');
   const [port, setPort] = useState('');
@@ -24,16 +25,27 @@ const TcpSettings: FC = () => {
     };
   }, [setState]);
   return (
-    <div>
+    <div style={{ paddingLeft: '10px' }}>
       <Form>
         <Form.Group>
           <Row>
-            <Col sm={{ span: 8, offset: 4 }}>
-              <Form.Text className="text-muted">{`Status: ${state}`}</Form.Text>
+            <Col>
+              <Form.Text className="text-muted">
+                <FaCircle
+                  color={
+                    status === 'closed'
+                      ? '#ccc'
+                      : status === 'listening'
+                      ? '#77FF77'
+                      : '#FF7777'
+                  }
+                />
+                {`Status: ${status}`}
+              </Form.Text>
             </Col>{' '}
           </Row>
           <Row>
-            <Col sm={{ span: 4, offset: 4 }}>
+            <Col sm={3}>
               <Form.Control
                 type="text"
                 placeholder="host"
@@ -41,9 +53,10 @@ const TcpSettings: FC = () => {
                 onChange={(event) => {
                   setHost(event.target.value);
                 }}
+                disabled={status === 'listening'}
               />
             </Col>
-            <Col sm={2}>
+            <Col sm={3}>
               <Form.Control
                 type="text"
                 placeholder="port"
@@ -51,11 +64,13 @@ const TcpSettings: FC = () => {
                 onChange={(event) => {
                   setPort(event.target.value);
                 }}
+                disabled={status === 'listening'}
               />
             </Col>
             <Col sm={2}>
-              {state === 'closed' ? (
+              {status === 'closed' ? (
                 <Button
+                  variant="outline-success"
                   onClick={() => {
                     (async () => await api.tcpListen(host, parseInt(port)))();
                   }}
@@ -64,6 +79,7 @@ const TcpSettings: FC = () => {
                 </Button>
               ) : (
                 <Button
+                  variant="outline-primary"
                   onClick={() => {
                     (async () => await api.tcpClose())();
                   }}
