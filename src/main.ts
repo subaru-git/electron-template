@@ -6,6 +6,10 @@ import windowStateKeeper from 'electron-window-state';
 
 const isDev = process.env.NODE_ENV === 'development';
 
+/**
+ * Get the resource directory.
+ * The directory is different in development or production.
+ */
 const getResourceDirectory = () => {
   return isDev
     ? path.join(process.cwd(), 'dist')
@@ -13,6 +17,10 @@ const getResourceDirectory = () => {
 };
 
 /// #if DEBUG
+
+/**
+ * Hot reload settings.
+ */
 if (isDev) {
   const execPath =
     process.platform === 'win32'
@@ -29,8 +37,7 @@ if (isDev) {
 /// #endif
 
 /**
- * window creation with memoization window state.
- * @notExported
+ * Create a window with the last window state.
  */
 const createWindow = () => {
   const windowState = windowStateKeeper({
@@ -76,4 +83,7 @@ app.whenReady().then(async () => {
   initialize(window);
 });
 
+/**
+ * Quit when all windows are closed.
+ */
 app.once('window-all-closed', () => app.quit());

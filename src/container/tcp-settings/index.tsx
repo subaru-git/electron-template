@@ -3,6 +3,12 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import { useStateValue, useStateSetValue } from '~/context';
 const { api } = window;
 
+/**
+ * This is the TcpSettings component.
+ * It has a host and port inputs and connects button.
+ *
+ * @returns TcpSettings component
+ */
 const TcpSettings: FC = () => {
   const state = useStateValue();
   const setState = useStateSetValue();

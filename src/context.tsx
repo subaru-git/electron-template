@@ -12,6 +12,23 @@ const setTcpStateContext = createContext<Dispatch<SetStateAction<string>>>(
   () => undefined
 );
 
+/**
+ * Context provider for the TCP state.
+ *
+ * Usage:
+ * ```typescript
+ * // Setup context
+ * <TcpStateProvider>
+ *   <App />
+ * </TcpStateProvider>
+ *
+ * // Use context
+ * const state = useStateValue();
+ * const setState = useStateSetValue();
+ * ```
+ *
+ * @param children children of the context provider
+ */
 const TcpStateProvider: FC = ({ children }) => {
   const [state, setState] = useState<string>('not working');
 
@@ -24,7 +41,15 @@ const TcpStateProvider: FC = ({ children }) => {
   );
 };
 
+/**
+ * Context of TCP state.
+ * @returns TCP state
+ */
 const useStateValue = () => useContext(tcpStateContext);
+/**
+ * Context of update TCP state function.
+ * @returns update TCP state function
+ */
 const useStateSetValue = () => useContext(setTcpStateContext);
 
 export { TcpStateProvider, useStateValue, useStateSetValue };
