@@ -1,6 +1,11 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Button, Form, Row, Col } from 'react-bootstrap';
-import { FaCircle } from 'react-icons/fa';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import CircleIcon from '@mui/icons-material/Circle';
+import AddToQueueIcon from '@mui/icons-material/AddToQueue';
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import { useStateValue, useStateSetValue } from '~/context';
 const { api } = window;
 
@@ -51,72 +56,69 @@ const TcpSettingsImpl: FC<TcpSettingsImplProps> = ({
   setPort,
 }) => {
   return (
-    <div style={{ paddingLeft: '10px' }}>
-      <Form>
-        <Form.Group>
-          <Row>
-            <Col>
-              <Form.Text className="text-muted">
-                <FaCircle
-                  color={
-                    status === 'closed'
-                      ? '#ccc'
-                      : status === 'listening'
-                      ? '#77FF77'
-                      : '#FF7777'
-                  }
-                />
-                {`Status: ${status}`}
-              </Form.Text>
-            </Col>{' '}
-          </Row>
-          <Row>
-            <Col sm={3}>
-              <Form.Control
-                type="text"
-                placeholder="host"
-                value={host}
-                onChange={(event) => {
-                  setHost(event.target.value);
-                }}
-                disabled={status === 'listening'}
-              />
-            </Col>
-            <Col sm={3}>
-              <Form.Control
-                type="text"
-                placeholder="port"
-                value={port}
-                onChange={(event) => {
-                  setPort(event.target.value);
-                }}
-                disabled={status === 'listening'}
-              />
-            </Col>
-            <Col sm={2}>
-              {status === 'closed' ? (
-                <Button
-                  variant="outline-success"
-                  onClick={() => {
-                    (async () => await api.tcpListen(host, parseInt(port)))();
-                  }}
-                >
-                  Listen
-                </Button>
-              ) : (
-                <Button
-                  variant="outline-primary"
-                  onClick={() => {
-                    (async () => await api.tcpClose())();
-                  }}
-                >
-                  Close
-                </Button>
-              )}
-            </Col>
-          </Row>
-        </Form.Group>
-      </Form>
+    <div style={{ padding: '10px' }}>
+      <Stack>
+        <Typography
+          variant="subtitle2"
+          sx={{ display: 'inline-flex', alignItems: 'center' }}
+        >
+          <CircleIcon
+            htmlColor={
+              status === 'listening'
+                ? '#77FF77'
+                : status === 'closed'
+                ? '#CCC'
+                : '#FF7777'
+            }
+            fontSize="small"
+            sx={{ marginRight: '5px' }}
+          />
+          {`Status: ${status}`}
+        </Typography>
+        <Stack direction="row" spacing={2}>
+          <TextField
+            label="host"
+            variant={status === 'listening' ? 'filled' : 'outlined'}
+            value={host}
+            onChange={(event) => {
+              setHost(event.target.value);
+            }}
+            disabled={status === 'listening'}
+          />
+          <TextField
+            label="port"
+            variant={status === 'listening' ? 'filled' : 'outlined'}
+            value={port}
+            onChange={(event) => {
+              setPort(event.target.value);
+            }}
+            disabled={status === 'listening'}
+          />
+          {status === 'closed' ? (
+            <Button
+              variant="outlined"
+              color="success"
+              endIcon={<AddToQueueIcon />}
+              onClick={() => {
+                (async () => await api.tcpListen(host, parseInt(port)))();
+              }}
+            >
+              Listen
+            </Button>
+          ) : (
+            <Button
+              variant="outlined"
+              color="secondary"
+              endIcon={<CancelPresentationIcon />}
+              onClick={() => {
+                (async () => await api.tcpClose())();
+              }}
+            >
+              Close
+            </Button>
+          )}
+        </Stack>
+      </Stack>
     </div>
   );
 };

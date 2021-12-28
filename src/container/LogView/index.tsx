@@ -1,4 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
+import Box from '@mui/material/Box';
 import { LazyLog } from 'react-lazylog';
 const { api } = window;
 
@@ -27,13 +28,13 @@ type LogViewImplProps = {
 
 const LogViewImpl: FC<LogViewImplProps> = ({ log }) => {
   return (
-    <div className="p-2" style={{ height: 300, width: '100%' }}>
+    <Box sx={{ height: 300, width: 'calc(100% - 32px)', p: 2 }}>
       <LazyLog
         extraLines={1}
         enableSearch
-        text={log.length === 0 ? 'nop' : log.join('\n')}
+        text={log.length === 0 ? 'No message received' : log.join('\n')}
       />
-    </div>
+    </Box>
   );
 };
 
