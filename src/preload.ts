@@ -24,4 +24,12 @@ contextBridge.exposeInMainWorld('api', {
       ipcRenderer.removeAllListeners('tcp-connection-state-change');
     };
   },
+  tcpMessage: (listener: (message: string) => void) => {
+    ipcRenderer.on('tcp-message', (event: IpcRendererEvent, message: string) =>
+      listener(message)
+    );
+    return () => {
+      ipcRenderer.removeAllListeners('tcp-message');
+    };
+  },
 });

@@ -25,4 +25,8 @@ export interface IApi {
    * @param listener The listener function for TCP state change.
    */
   tcpConnectionStateChange: (listener: (message: string) => void) => () => void;
+  /**
+   * Receive message from client.
+   */
+  tcpMessage: (listener: (message: string) => void) => () => void;
 }

@@ -28,7 +28,9 @@ class TcpClient {
         console.log(
           `${socket.remoteAddress}:${socket.remotePort} Says: ${data}`
         );
-        socket.write(`${`${data}`.replace(/\r?\n/g, '')} www\n`);
+        const message = `${data}`.replace(/\r?\n/g, '');
+        socket.write(`${message} www\n`);
+        this.window.webContents.send('tcp-message', message);
       });
       socket.on('close', () => {
         console.log(
