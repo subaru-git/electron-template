@@ -25,6 +25,32 @@ const TcpSettings: FC = () => {
     };
   }, [setState]);
   return (
+    <TcpSettingsImpl
+      status={status}
+      host={host}
+      port={port}
+      setHost={setHost}
+      setPort={setPort}
+    />
+  );
+};
+
+type TcpSettingsImplProps = {
+  status: string;
+  host: string;
+  port: string;
+  setHost: (host: string) => void;
+  setPort: (port: string) => void;
+};
+
+const TcpSettingsImpl: FC<TcpSettingsImplProps> = ({
+  status,
+  host,
+  port,
+  setHost,
+  setPort,
+}) => {
+  return (
     <div style={{ paddingLeft: '10px' }}>
       <Form>
         <Form.Group>
@@ -95,4 +121,4 @@ const TcpSettings: FC = () => {
   );
 };
 
-export { TcpSettings };
+export { TcpSettings, TcpSettingsImpl };

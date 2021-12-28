@@ -1,21 +1,22 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { TcpSettings } from '.';
-import { TcpStateProvider } from '~/context';
+import { TcpSettingsImpl } from '.';
 
 export default {
   title: 'TCP Settings',
-} as ComponentMeta<typeof TcpSettings>;
+} as ComponentMeta<typeof TcpSettingsImpl>;
 
-const Template: ComponentStory<typeof TcpSettings> = (args) => (
-  <TcpSettings {...args} />
+const Template: ComponentStory<typeof TcpSettingsImpl> = (args) => (
+  <TcpSettingsImpl {...args} />
 );
 
 export const ServerClosed = Template.bind({});
-ServerClosed.decorators = [
-  (Story) => <TcpStateProvider initial="closed">{Story()}</TcpStateProvider>,
-];
+ServerClosed.args = {
+  status: 'closed',
+};
 export const ServerListening = Template.bind({});
-ServerListening.decorators = [
-  (Story) => <TcpStateProvider initial="listening">{Story()}</TcpStateProvider>,
-];
+ServerListening.args = {
+  status: 'listening',
+  host: 'localhost',
+  port: '8888',
+};

@@ -2,6 +2,12 @@ import React, { FC, useState, useEffect } from 'react';
 import { LazyLog } from 'react-lazylog';
 const { api } = window;
 
+/**
+ * This is the LogView component.
+ * It receives a message from the TCP client and displays it like a log.
+ *
+ * @returns LogView component
+ */
 const LogView: FC = () => {
   const [log, setLog] = useState([] as string[]);
   useEffect(() => {
@@ -12,6 +18,14 @@ const LogView: FC = () => {
       removeListener();
     };
   }, [log, setLog]);
+  return <LogViewImpl log={log} />;
+};
+
+type LogViewImplProps = {
+  log: string[];
+};
+
+const LogViewImpl: FC<LogViewImplProps> = ({ log }) => {
   return (
     <div className="p-2" style={{ height: 300, width: '100%' }}>
       <LazyLog
@@ -23,4 +37,4 @@ const LogView: FC = () => {
   );
 };
 
-export { LogView };
+export { LogView, LogViewImpl };
