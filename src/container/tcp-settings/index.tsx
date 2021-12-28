@@ -15,7 +15,7 @@ const TcpSettings: FC = () => {
   const [host, setHost] = useState('');
   const [port, setPort] = useState('');
   useEffect(() => {
-    const removeListener = api.tcpConnectStateChange((message: string) => {
+    const removeListener = api.tcpConnectionStateChange((message: string) => {
       console.log(`log from TcpSettings ${message}`);
       setState(message);
     });
@@ -28,11 +28,6 @@ const TcpSettings: FC = () => {
       <Form>
         <Form.Group>
           <Row>
-            <Col sm={{ span: 8, offset: 4 }}>
-              <Form.Text className="text-muted">
-                Enter your listening host and port.
-              </Form.Text>
-            </Col>
             <Col sm={{ span: 8, offset: 4 }}>
               <Form.Text className="text-muted">{`Status: ${state}`}</Form.Text>
             </Col>{' '}
@@ -59,14 +54,23 @@ const TcpSettings: FC = () => {
               />
             </Col>
             <Col sm={2}>
-              <Button
-                onClick={() => {
-                  console.log(host, port);
-                  (async () => await api.tcpConnect(host, parseInt(port)))();
-                }}
-              >
-                Connect
-              </Button>
+              {state === 'closed' ? (
+                <Button
+                  onClick={() => {
+                    (async () => await api.tcpListen(host, parseInt(port)))();
+                  }}
+                >
+                  Listen
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    (async () => await api.tcpClose())();
+                  }}
+                >
+                  Close
+                </Button>
+              )}
             </Col>
           </Row>
         </Form.Group>

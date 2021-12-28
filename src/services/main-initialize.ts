@@ -8,8 +8,11 @@ import { TcpClient } from './tcp-client';
  */
 const initialize = (window: BrowserWindow) => {
   const tcpClient = new TcpClient(window);
-  ipcMain.on('tcpConnect', (event, host, port) => {
-    tcpClient.connect(host, port);
+  ipcMain.on('tcp-listen', (event, host, port) => {
+    tcpClient.listen(host, port);
+  });
+  ipcMain.on('tcp-close', () => {
+    tcpClient.close();
   });
 };
 

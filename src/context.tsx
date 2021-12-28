@@ -30,7 +30,7 @@ const setTcpStateContext = createContext<Dispatch<SetStateAction<string>>>(
  * @param children children of the context provider
  */
 const TcpStateProvider: FC = ({ children }) => {
-  const [state, setState] = useState<string>('not working');
+  const [state, setState] = useState<string>('closed');
 
   return (
     <tcpStateContext.Provider value={state}>

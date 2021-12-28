@@ -14,11 +14,15 @@ export interface IApi {
    * @param host The host to listen to.
    * @param port The port to listen to.
    */
-  tcpConnect: (host: string, port: number) => Promise<void>;
+  tcpListen: (host: string, port: number) => Promise<void>;
+  /**
+   * Close the TCP server.
+   */
+  tcpClose: () => Promise<void>;
   /**
    * Connection state Changed.
    *
    * @param listener The listener function for TCP state change.
    */
-  tcpConnectStateChange: (listener: (message: string) => void) => () => void;
+  tcpConnectionStateChange: (listener: (message: string) => void) => () => void;
 }
