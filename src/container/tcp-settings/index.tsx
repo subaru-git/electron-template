@@ -22,7 +22,7 @@ const TcpSettings: FC = () => {
     return () => {
       removeListener();
     };
-  }, []);
+  }, [setState]);
   return (
     <div>
       <Form>
