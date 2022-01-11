@@ -1,5 +1,6 @@
 import { BrowserWindow } from 'electron';
 import dgram from 'dgram';
+import log from 'electron-log';
 
 /**
  * This class is used to manage the UDP server.
@@ -9,7 +10,7 @@ class UdpServer {
   /** browser window */
   private window: BrowserWindow;
   /** UDP server */
-  private server: dgram.Socket;
+  private server: dgram.Socket | null;
 
   /**
    * Constructor.
@@ -18,22 +19,7 @@ class UdpServer {
    */
   constructor(window: BrowserWindow) {
     this.window = window;
-    this.server = dgram.createSocket('udp4');
-    this.server.on('listening', () => {
-      const address = this.server.address();
-      console.log(`server listening ${address.address}:${address.port}`);
-    });
-    this.server.on('error', (error) => {
-      console.log(`server error:\n${error.stack}`);
-      this.server.close();
-    });
-    this.server.on('message', (msg, rinfo) => {
-      console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
-      this.window.webContents.send(
-        'tcp-message',
-        `${rinfo.address}:${rinfo.port} ${msg}`
-      );
-    });
+    this.server = null;
   }
 
   /**
@@ -42,9 +28,13 @@ class UdpServer {
    * @param port The port to listen to.
    */
   listen = async (port: number) => {
-    this.server.bind(port, () => {
-      console.log(`server started at ${port}`);
-      // this.window.webContents.send('tcp-connection-state-change', 'listening');
+    this.createServer();
+    this.server?.bind(port, () => {
+      log.info(`UDP server started at ${port}`);
+      this.window.webContents.send(
+        'tcp-message',
+        `UDP server started at ${port}`
+      );
     });
   };
 
@@ -52,7 +42,41 @@ class UdpServer {
    * Close the UDP server.
    */
   close = () => {
-    this.server.close();
+    this.server?.close();
+    this.server = null;
+  };
+
+  private createServer = () => {
+    if (this.server !== null) return;
+
+    this.server = dgram.createSocket('udp4');
+    this.server.on('listening', () => {
+      if (this.server === null) return;
+      const { address, port } = this.server.address();
+      log.info(`UDP server listening ${address}:${port}`);
+    });
+    this.server.on('error', (error) => {
+      log.error(`server error:\n${error.stack}`);
+      if (this.server === null) return;
+      const { address, port } = this.server.address();
+      this.window.webContents.send(
+        'tcp-message',
+        `${address}:${port} UDP server error:\n${error.stack}`
+      );
+      this.server.close();
+    });
+    this.server.on('message', (msg, rinfo) => {
+      log.info(`${rinfo.address}:${rinfo.port} ${msg}`);
+      this.window.webContents.send(
+        'tcp-message',
+        `${rinfo.address}:${rinfo.port} ${msg}`
+      );
+      this.server?.send(msg, rinfo.port, rinfo.address);
+    });
+    this.server.on('close', () => {
+      this.window.webContents.send('tcp-message', `UDP server closed`);
+      log.info(`UDP server closed`);
+    });
   };
 }
 export { UdpServer };

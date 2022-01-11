@@ -15,6 +15,8 @@ jest.mock('net', () => ({
   })),
 }));
 
+jest.mock('electron-log', () => ({ info: jest.fn() }));
+
 test('create instance is success', () => {
   const window = new BrowserWindow();
   const tcpServer = new TcpServer(window);

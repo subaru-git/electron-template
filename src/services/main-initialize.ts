@@ -10,9 +10,9 @@ import { UdpServer } from './udp-server';
 const initialize = (window: BrowserWindow) => {
   const tcpServer = new TcpServer(window);
   const udpServer = new UdpServer(window);
-  ipcMain.on('tcp-listen', (event, host, port) => {
-    tcpServer.listen(host, port);
-    udpServer.listen(port);
+  ipcMain.on('tcp-listen', async (event, host, port) => {
+    await tcpServer.listen(host, port);
+    await udpServer.listen(port);
   });
   ipcMain.on('tcp-close', () => {
     tcpServer.close();

@@ -6,6 +6,7 @@ jest.mock('electron', () => ({
     webContents: jest.fn(),
   })),
 }));
+jest.mock('electron-log', () => ({ info: jest.fn() }));
 
 test('create instance is success', () => {
   const window = new BrowserWindow();
