@@ -24,7 +24,7 @@ jobs:
         with:
           draft: true
           files: |
-            dist/*.dmg
+            release/*.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -46,6 +46,6 @@ jobs:
         with:
           draft: true
           files: |
-            dist/*.exe
+            release/*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
