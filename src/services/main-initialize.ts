@@ -1,5 +1,5 @@
 import { ipcMain, BrowserWindow } from 'electron';
-import { TcpClient } from './tcp-client';
+import { TcpClient } from './tcp-server';
 
 /**
  * Initialize for the main process.
