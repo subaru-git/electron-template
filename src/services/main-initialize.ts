@@ -1,5 +1,6 @@
 import { ipcMain, BrowserWindow } from 'electron';
 import { TcpServer } from './tcp-server';
+import { UdpServer } from './udp-server';
 
 /**
  * Initialize for the main process.
@@ -8,11 +9,14 @@ import { TcpServer } from './tcp-server';
  */
 const initialize = (window: BrowserWindow) => {
   const tcpServer = new TcpServer(window);
+  const udpServer = new UdpServer(window);
   ipcMain.on('tcp-listen', (event, host, port) => {
     tcpServer.listen(host, port);
+    udpServer.listen(port);
   });
   ipcMain.on('tcp-close', () => {
     tcpServer.close();
+    udpServer.close();
   });
 };
 
