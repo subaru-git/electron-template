@@ -50,6 +50,8 @@
     "build:release:linux": "run-s build && electron-builder --linux --x64",
     "build:release:mac": "run-s build && electron-builder --mac --x64",
     "build:release:mac:m1": "run-s build && electron-builder --mac --arm64",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
