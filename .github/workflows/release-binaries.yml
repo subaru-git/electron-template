@@ -18,7 +18,8 @@ jobs:
         run: yarn --network-timeout 600000
       - name: build application
         run: |
-          export GH_TOKEN=${{ secrets.GH_TOKEN }}
+          export GH_TOKEN="${{ secrets.GH_TOKEN }}"
+          echo $GH_TOKEN
           yarn build:release:mac
       - name: create release
         uses: softprops/action-gh-release@v1
@@ -42,7 +43,8 @@ jobs:
         run: yarn --network-timeout 600000
       - name: build application
         run: |
-          export GH_TOKEN=${{ secrets.GH_TOKEN }}
+          export GH_TOKEN="${{ secrets.GH_TOKEN }}"
+          echo $GH_TOKEN
           yarn build:release:windows
       - name: create release
         uses: softprops/action-gh-release@v1
