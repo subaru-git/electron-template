@@ -11,6 +11,13 @@
     "productName": "Electron Template",
     "copyright": "Copyright © 2022 whoami",
     "artifactName": "${name}-${version}-${platform}-${arch}.${ext}",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "subaru-git",
+        "repo": "electron-template"
+      }
+    ],
     "directories": {
       "output": "release",
       "buildResources": "assets"
@@ -46,9 +53,9 @@
     "test": "jest",
     "start": "run-p dev:*",
     "start:prod": "run-s build serve",
-    "build:release:windows": "run-s build && electron-builder --windows --x64",
+    "build:release:windows": "run-s build && electron-builder --windows --x64  -p always",
     "build:release:linux": "run-s build && electron-builder --linux --x64",
-    "build:release:mac": "run-s build && electron-builder --mac --x64",
+    "build:release:mac": "run-s build && electron-builder --mac --x64 -p always",
     "build:release:mac:m1": "run-s build && electron-builder --mac --arm64",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
