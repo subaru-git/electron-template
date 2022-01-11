@@ -5,7 +5,7 @@ import * as net from 'net';
  * This class is used to manage the TCP server.
  * And manages browser window for sending messages to the renderer process.
  */
-class TcpClient {
+class TcpServer {
   /** browser window */
   private window: BrowserWindow;
   /** TCP server */
@@ -90,4 +90,4 @@ class TcpClient {
     }
   };
 }
-export { TcpClient };
+export { TcpServer };

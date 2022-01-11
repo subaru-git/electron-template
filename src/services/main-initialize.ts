@@ -1,5 +1,5 @@
 import { ipcMain, BrowserWindow } from 'electron';
-import { TcpClient } from './tcp-server';
+import { TcpServer } from './tcp-server';
 
 /**
  * Initialize for the main process.
@@ -7,12 +7,12 @@ import { TcpClient } from './tcp-server';
  * @param window browser window
  */
 const initialize = (window: BrowserWindow) => {
-  const tcpClient = new TcpClient(window);
+  const tcpServer = new TcpServer(window);
   ipcMain.on('tcp-listen', (event, host, port) => {
-    tcpClient.listen(host, port);
+    tcpServer.listen(host, port);
   });
   ipcMain.on('tcp-close', () => {
-    tcpClient.close();
+    tcpServer.close();
   });
 };
 

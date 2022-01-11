@@ -1,4 +1,4 @@
-import { TcpClient } from '.';
+import { TcpServer } from '.';
 import { BrowserWindow } from 'electron';
 
 jest.mock('electron', () => ({
@@ -17,29 +17,29 @@ jest.mock('net', () => ({
 
 test('create instance is success', () => {
   const window = new BrowserWindow();
-  const tcpClient = new TcpClient(window);
-  expect(tcpClient).toBeDefined();
+  const tcpServer = new TcpServer(window);
+  expect(tcpServer).toBeDefined();
 });
 
 test('wake up server', () => {
   const window = new BrowserWindow();
   window.webContents.send = jest.fn();
-  const tcpClient = new TcpClient(window);
-  tcpClient.listen('localhost', 65535);
+  const tcpServer = new TcpServer(window);
+  tcpServer.listen('localhost', 65535);
 });
 
 test('close running server', () => {
   const window = new BrowserWindow();
   window.webContents.send = jest.fn();
-  const tcpClient = new TcpClient(window);
+  const tcpServer = new TcpServer(window);
   listening.mockReturnValue(true);
-  tcpClient.close();
+  tcpServer.close();
 });
 
 test('close stopped server', () => {
   const window = new BrowserWindow();
   window.webContents.send = jest.fn();
-  const tcpClient = new TcpClient(window);
+  const tcpServer = new TcpServer(window);
   listening.mockReturnValue(false);
-  tcpClient.close();
+  tcpServer.close();
 });
