@@ -22,6 +22,10 @@ class TcpClient {
     this.window = window;
     this.server = net.createServer((socket) => {
       console.log(`${socket.remoteAddress}:${socket.remotePort} Connected`);
+      this.window.webContents.send(
+        'tcp-message',
+        `${socket.remoteAddress}:${socket.remotePort} Connected`
+      );
       this.clients.push(socket);
       socket.write('client connected\n');
       socket.on('data', (data) => {
@@ -30,16 +34,27 @@ class TcpClient {
         );
         const message = `${data}`.replace(/\r?\n/g, '');
         socket.write(`${message} www\n`);
-        this.window.webContents.send('tcp-message', message);
+        this.window.webContents.send(
+          'tcp-message',
+          `${socket.remoteAddress}:${socket.remotePort} ${message}`
+        );
       });
       socket.on('close', () => {
         console.log(
           `${socket.remoteAddress}:${socket.remotePort} Terminated the connection`
         );
+        this.window.webContents.send(
+          'tcp-message',
+          `${socket.remoteAddress}:${socket.remotePort} Terminated the connection`
+        );
         this.clients.splice(this.clients.indexOf(socket), 1);
       });
-      socket.on('error', function (error) {
+      socket.on('error', (error) => {
         console.error(
+          `${socket.remoteAddress}:${socket.remotePort} Connection Error ${error}`
+        );
+        this.window.webContents.send(
+          'tcp-message',
           `${socket.remoteAddress}:${socket.remotePort} Connection Error ${error}`
         );
       });
