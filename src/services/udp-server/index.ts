@@ -24,6 +24,7 @@ class UdpServer {
 
   /**
    * Start the UDP server.
+   * The server needs to create a new UDP socket for listening.
    *
    * @param port The port to listen to.
    */
