@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Divider from '@mui/material/Divider';
-import { TcpSettings } from '../container/tcp-settings';
+import { TcpSettings } from '../container/TcpSettings';
 import { LogView } from '~/container/LogView';
 
 const MainPage: FC = () => {
