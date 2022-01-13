@@ -7,6 +7,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import AddToQueueIcon from '@mui/icons-material/AddToQueue';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import { useStateValue, useStateSetValue } from '~/context';
+import { stringify } from 'querystring';
 const { api } = window;
 
 /**
@@ -21,14 +22,26 @@ const TcpSettings: FC = () => {
   const [host, setHost] = useState('');
   const [port, setPort] = useState('');
   useEffect(() => {
-    const removeListener = api.tcpConnectionStateChange((message: string) => {
-      console.log(`log from TcpSettings ${message}`);
-      setState(message);
-    });
+    const stateChangeRemoveListener = api.tcpConnectionStateChange(
+      (state: string) => {
+        console.log(`log from TcpSettings ${state}`);
+        setState(state);
+      }
+    );
+    const tcpSettingsRemoveListener = api.tcpSettingsResponse(
+      (host: string, port: string) => {
+        setHost(host);
+        setPort(port);
+      }
+    );
+    api.tcpSettingsRequest();
+
     return () => {
-      removeListener();
+      stateChangeRemoveListener();
+      tcpSettingsRemoveListener();
     };
   }, [setState]);
+
   return (
     <TcpSettingsImpl
       status={status}

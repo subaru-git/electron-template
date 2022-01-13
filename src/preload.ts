@@ -32,4 +32,20 @@ contextBridge.exposeInMainWorld('api', {
       ipcRenderer.removeAllListeners('tcp-message');
     };
   },
+  tcpSettingsRequest: async (): Promise<void> => {
+    console.log(`log from tcpSettingsRequest`);
+    await ipcRenderer.send('tcp-settings-request');
+  },
+  tcpSettingsResponse: (listener: (host: string, port: string) => void) => {
+    console.log(`tcpSettingsResponse`);
+    ipcRenderer.on(
+      'tcp-settings-response',
+      (event: IpcRendererEvent, host: string, port: string) =>
+        listener(host, port)
+    );
+    return () => {
+      console.log(`remove listener tcpSettingsResponse`);
+      ipcRenderer.removeAllListeners('tcp-settings-response');
+    };
+  },
 });

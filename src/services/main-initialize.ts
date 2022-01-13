@@ -18,6 +18,9 @@ const initialize = (window: BrowserWindow) => {
     tcpServer.close();
     udpServer.close();
   });
+  ipcMain.on('tcp-settings-request', () => {
+    tcpServer.settingsRequest();
+  });
 };
 
 export { initialize };

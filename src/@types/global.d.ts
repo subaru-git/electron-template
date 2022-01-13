@@ -29,4 +29,14 @@ export interface IApi {
    * Receive message from client.
    */
   tcpMessage: (listener: (message: string) => void) => () => void;
+  /**
+   * Request to the main process to get TCP settings.
+   */
+  tcpSettingsRequest: () => Promise<void>;
+  /**
+   * A response that TCP settings to the renderer process.
+   */
+  tcpSettingsResponse: (
+    listener: (host: string, port: string) => void
+  ) => () => void;
 }

@@ -47,3 +47,10 @@ test('close stopped server', () => {
   listening.mockReturnValue(false);
   tcpServer.close();
 });
+
+test('settings request', () => {
+  const window = new BrowserWindow();
+  window.webContents.send = jest.fn();
+  const tcpServer = new TcpServer(window);
+  tcpServer.settingsRequest();
+});

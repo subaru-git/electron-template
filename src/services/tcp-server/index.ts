@@ -1,6 +1,8 @@
 import { BrowserWindow } from 'electron';
 import * as net from 'net';
 import log from 'electron-log';
+import ElectronStore from 'electron-store';
+const store = new ElectronStore();
 
 /**
  * This class is used to manage the TCP server.
@@ -67,6 +69,8 @@ class TcpServer {
    * @param port The port to listen to.
    */
   listen = async (host: string, port: number) => {
+    store.set('tcp-server.host', host);
+    store.set('tcp-server.port', port);
     this.server.listen(port, host, () => {
       this.window.webContents.send('tcp-connection-state-change', 'listening');
       this.window.webContents.send(
@@ -92,6 +96,17 @@ class TcpServer {
         log.info(`TCP server closed`);
       });
     }
+  };
+
+  /**
+   * TCP settings request.
+   * This request is sent from the renderer process.
+   * And the response is sent to the renderer process.
+   */
+  settingsRequest = () => {
+    const host = store.get('tcp-server.host') ?? '';
+    const port = store.get('tcp-server.port') ?? '';
+    this.window.webContents.send('tcp-settings-response', host, port);
   };
 }
 export { TcpServer };
