@@ -7,7 +7,6 @@ import CircleIcon from '@mui/icons-material/Circle';
 import AddToQueueIcon from '@mui/icons-material/AddToQueue';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import { useStateValue, useStateSetValue } from '~/context';
-import { stringify } from 'querystring';
 const { api } = window;
 
 /**
