@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { MainPage } from './pages/MainPage';
+import { AppThemeProvider } from './container/AppThemeProvider';
 import { TcpStateProvider } from './context';
 
 /**
@@ -9,7 +10,9 @@ import { TcpStateProvider } from './context';
 ReactDOM.render(
   <React.StrictMode>
     <TcpStateProvider initial="closed">
-      <MainPage />
+      <AppThemeProvider>
+        <MainPage />
+      </AppThemeProvider>
     </TcpStateProvider>
   </React.StrictMode>,
   document.getElementById('root')
